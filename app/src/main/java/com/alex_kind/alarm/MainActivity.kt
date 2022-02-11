@@ -60,11 +60,13 @@ class MainActivity : AppCompatActivity() {
 
         pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
 
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY, pendingIntent
+//        alarmManager.setRepeating(
+//            AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
+//            AlarmManager.INTERVAL_DAY, pendingIntent
+//
+//        )
 
-        )
+        alarmManager.setWindow(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,1000,pendingIntent)
 
         Toast.makeText(this, "Alarm set Successfully", Toast.LENGTH_SHORT)
             .show()
@@ -73,27 +75,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun showTimePicker() {
         picker = MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_12H)
-            .setHour(12)
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(8)
             .setTitleText("Select Alarm Time")
             .build()
 
         picker.show(supportFragmentManager, "alarm id")
 
         picker.addOnPositiveButtonClickListener {
-            if (picker.hour > 12) {
-                binding.selectedTime.text =
-                    String.format("%02d", picker.hour - 12) + ":" + String.format(
-                        "%02d",
-                        picker.minute
-                    ) + "PM"
-            } else {
                 binding.selectedTime.text =
                     String.format("%02d", picker.hour) + ":" + String.format(
                         "%02d",
                         picker.minute
-                    ) + "AM"
-            }
+                    )
 
             calendar = Calendar.getInstance()
             calendar[Calendar.HOUR_OF_DAY] = picker.hour
