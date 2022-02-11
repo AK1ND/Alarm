@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Apps/Alarm/app/src/main/res/layout/activity_destination.xml" value="0.12588652482269502" />
+        <entry key="..\:/Android Apps/Alarm/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Android Apps/Alarm/app/src/main/res/layout/activity_sound.xml" value="0.259375" />
         <entry key="..\:/Kotlin Projects/Alarm/app/src/main/res/layout/activity_main.xml" value="0.19519927536231885" />
       </map>
     </option>
