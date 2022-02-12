@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     private fun cancelAlarm() {
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReceiver::class.java)
@@ -118,4 +119,5 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
 }
