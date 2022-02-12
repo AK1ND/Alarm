@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.alex_kind.alarm.databinding.ActivityMainBinding
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 //
 //        )
 
-        alarmManager.setWindow(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,1000,pendingIntent)
+        alarmManager.setWindow(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, 1000, pendingIntent)
 
         Toast.makeText(this, "Alarm set Successfully", Toast.LENGTH_SHORT)
             .show()
@@ -84,13 +85,17 @@ class MainActivity : AppCompatActivity() {
         picker.show(supportFragmentManager, "alarm id")
 
         picker.addOnPositiveButtonClickListener {
-                binding.selectedTime.text =
-                    String.format("%02d", picker.hour) + ":" + String.format(
-                        "%02d",
-                        picker.minute
-                    )
+            binding.selectedTime.text =
+                String.format("%02d", picker.hour) + ":" + String.format(
+                    "%02d",
+                    picker.minute
+                )
 
             calendar = Calendar.getInstance()
+
+            if (calendar[Calendar.HOUR_OF_DAY] > picker.hour) {
+                calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH]
+            }
             calendar[Calendar.HOUR_OF_DAY] = picker.hour
             calendar[Calendar.MINUTE] = picker.minute
             calendar[Calendar.SECOND] = 0
