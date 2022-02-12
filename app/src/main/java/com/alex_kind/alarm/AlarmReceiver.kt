@@ -38,7 +38,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         resultIntent.data = Uri.parse(
             "content://"
-                    + Calendar.getInstance().getTimeInMillis()
+                    + Calendar.getInstance().timeInMillis
         )
         resultIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(context,resultIntent,null)

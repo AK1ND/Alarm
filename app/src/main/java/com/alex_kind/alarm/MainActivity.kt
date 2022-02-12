@@ -62,12 +62,6 @@ class MainActivity : AppCompatActivity() {
 
         pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
 
-//        alarmManager.setRepeating(
-//            AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
-//            AlarmManager.INTERVAL_DAY, pendingIntent
-//
-//        )
-
         alarmManager.setWindow(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, 1000, pendingIntent)
 
         Toast.makeText(this, "Alarm set Successfully", Toast.LENGTH_SHORT)
@@ -94,7 +88,9 @@ class MainActivity : AppCompatActivity() {
             calendar = Calendar.getInstance()
 
             if (calendar[Calendar.HOUR_OF_DAY] > picker.hour) {
-                calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH]
+                if (calendar[Calendar.MINUTE] > picker.minute) {
+                    calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH]
+                }
             }
             calendar[Calendar.HOUR_OF_DAY] = picker.hour
             calendar[Calendar.MINUTE] = picker.minute
