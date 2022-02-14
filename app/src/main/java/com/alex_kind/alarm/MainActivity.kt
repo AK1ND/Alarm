@@ -5,14 +5,22 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.room.Room
 import com.alex_kind.alarm.databinding.ActivityMainBinding
+import com.alex_kind.alarm.db.Alarms
+import com.alex_kind.alarm.db.DatabaseAlarms
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -33,18 +41,15 @@ class MainActivity : AppCompatActivity() {
             showTimePicker()
         }
 
-        binding.cancelAlarmBtn.setOnClickListener {
-            cancelAlarm()
-        }
 
     }
 
 
-    private fun cancelAlarm() {
+    private fun cancelAlarm(req: Int) {
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReceiver::class.java)
 
-        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+        pendingIntent = PendingIntent.getBroadcast(this, req, intent, 0)
 
         alarmManager.cancel(pendingIntent)
 
@@ -58,9 +63,13 @@ class MainActivity : AppCompatActivity() {
     private fun setAlarm() {
 
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+
         val intent = Intent(this, AlarmReceiver::class.java)
 
-        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+        val req = (Math.random() * 100).toInt()
+        Log.d("!!!", req.toString())
+
+        pendingIntent = PendingIntent.getBroadcast(this, req, intent, 0)
 
         alarmManager.setWindow(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, 1000, pendingIntent)
 
@@ -85,6 +94,34 @@ class MainActivity : AppCompatActivity() {
                     picker.minute
                 )
 
+
+
+            CoroutineScope(Dispatchers.Main).launch {
+
+                val db =
+                    Room.databaseBuilder(applicationContext, DatabaseAlarms::class.java, "myalarms")
+                        .createFromAsset("myalarms")
+                        .build()
+
+//                val reqList = db.alarmsDao().getReqCodes()
+//
+//                var req = 1
+//
+//                for (i in reqList.indices) {
+//                    if (req == i) {
+//                        val sortedList = reqList.sorted()
+//                        req = sortedList[0]+1
+//                    }
+//                }
+//
+//                val newAlarm = Alarms(req,picker.hour,picker.minute)
+
+//                db.alarmsDao().addAlarm(newAlarm)
+
+                Log.d("!!!",db.alarmsDao().getAlarms().toString())
+
+            }
+
             calendar = Calendar.getInstance()
 
             if (calendar[Calendar.HOUR_OF_DAY] > picker.hour) {
@@ -102,6 +139,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 
     private fun createNotificationChannel() {
 
