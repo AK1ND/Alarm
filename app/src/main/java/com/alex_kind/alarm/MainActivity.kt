@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
 
             if (calendar[Calendar.HOUR_OF_DAY] > picker.hour) {
                 if (calendar[Calendar.MINUTE] > picker.minute) {
-                    calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH]
+                    calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH+1]
                 }
             }
             calendar[Calendar.HOUR_OF_DAY] = picker.hour
