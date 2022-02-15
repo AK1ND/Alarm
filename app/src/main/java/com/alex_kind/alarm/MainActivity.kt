@@ -90,7 +90,6 @@ class MainActivity : AppCompatActivity() {
         recreate()
 
 
-
     }
 
     private fun showTimePicker() {
@@ -142,7 +141,7 @@ class MainActivity : AppCompatActivity() {
 
                 Log.d("!!!newal", db.alarmsDao().getAlarms().toString())
 
-                if (!isDbConsistAlarm){
+                if (!isDbConsistAlarm) {
                     if (calendar[Calendar.HOUR_OF_DAY] > picker.hour) {
                         if (calendar[Calendar.MINUTE] > picker.minute) {
                             calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH + 1]

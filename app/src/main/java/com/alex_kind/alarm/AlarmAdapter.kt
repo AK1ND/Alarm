@@ -9,7 +9,6 @@ import com.alex_kind.alarm.db.Alarms
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.math.min
 
 
 class AlarmAdapter(var alarms: List<Alarms>, mainActivity: CoroutineScope) :
@@ -29,7 +28,7 @@ class AlarmAdapter(var alarms: List<Alarms>, mainActivity: CoroutineScope) :
         val holder = AlarmHolder(layout)
 
         holder.itemView.setOnClickListener {
-            CoroutineScope(Dispatchers.Main).launch{
+            CoroutineScope(Dispatchers.Main).launch {
 
             }
         }
@@ -44,11 +43,11 @@ class AlarmAdapter(var alarms: List<Alarms>, mainActivity: CoroutineScope) :
         val alarm = alarms[position]
 
         var minute = alarm.minute.toString()
-        if(alarm.minute < 10){
-            minute = "0"+alarm.minute.toString()
+        if (alarm.minute < 10) {
+            minute = "0" + alarm.minute.toString()
         }
 
-        holder.tvAlarm?.text = alarm.hour.toString()+":"+minute
+        holder.tvAlarm?.text = alarm.hour.toString() + ":" + minute
 
     }
 

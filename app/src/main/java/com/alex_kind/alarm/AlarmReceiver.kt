@@ -9,7 +9,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.room.Room
-import com.alex_kind.alarm.db.Alarms
 import com.alex_kind.alarm.db.DatabaseAlarms
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,8 +60,8 @@ class AlarmReceiver : BroadcastReceiver() {
 
             val list = db.alarmsDao().getAlarms()
 
-            for (i in list.indices){
-                if(list[i].hour == hour && list[i].minute == minute){
+            for (i in list.indices) {
+                if (list[i].hour == hour && list[i].minute == minute) {
                     db.alarmsDao().delAlarm(list[i])
                 }
             }
