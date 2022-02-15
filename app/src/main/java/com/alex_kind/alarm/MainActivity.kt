@@ -104,8 +104,6 @@ class MainActivity : AppCompatActivity() {
                     picker.minute
                 )
 
-
-
             CoroutineScope(Dispatchers.Main).launch {
 
                 val db =
@@ -113,22 +111,31 @@ class MainActivity : AppCompatActivity() {
                         .createFromAsset("myalarms")
                         .build()
 
-//                val reqList = db.alarmsDao().getReqCodes()
-//
-//                var req = 1
-//
-//                for (i in reqList.indices) {
-//                    if (req == i) {
-//                        val sortedList = reqList.sorted()
-//                        req = sortedList[0]+1
-//                    }
-//                }
-//
-//                val newAlarm = Alarms(req,picker.hour,picker.minute)
+                val reqList = db.alarmsDao().getReqCodes()
+                Log.d("!!!reqL",reqList.toString())
 
-//                db.alarmsDao().addAlarm(newAlarm)
+                var req = 1
+                for (i in reqList.indices) {
+                 req+=reqList[i]
+                }
 
-                Log.d("!!!",db.alarmsDao().getAlarms().toString())
+                val newAlarm = Alarms(req,picker.hour,picker.minute)
+
+
+                db.alarmsDao().addAlarm(newAlarm)
+
+                Log.d("!!!newal",db.alarmsDao().getAlarms().toString())
+
+                val alarmList = db.alarmsDao().getAlarms()
+
+                val list = alarmList.sortedWith(compareBy { it.hour*60+it.minute })
+
+                Log.d("!!!sorted",list.toString())
+
+                db.alarmsDao().deleteAll()
+                db.alarmsDao().insertAll(list)
+
+
 
             }
 
@@ -136,7 +143,7 @@ class MainActivity : AppCompatActivity() {
 
             if (calendar[Calendar.HOUR_OF_DAY] > picker.hour) {
                 if (calendar[Calendar.MINUTE] > picker.minute) {
-                    calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH]
+                    calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH+1]
                 }
             }
             calendar[Calendar.HOUR_OF_DAY] = picker.hour

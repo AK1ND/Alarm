@@ -8,6 +8,11 @@ import android.net.Uri
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.room.Room
+import com.alex_kind.alarm.db.DatabaseAlarms
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -41,6 +46,19 @@ class AlarmReceiver : BroadcastReceiver() {
             context,
             SoundActivity::class.java
         )
+
+        CoroutineScope(Dispatchers.Main).launch {
+
+            val db =
+                Room.databaseBuilder(context, DatabaseAlarms::class.java, "myalarms")
+                    .createFromAsset("myalarms")
+                    .build()
+
+            val list = db.alarmsDao().getAlarms()
+
+            db.alarmsDao().delAlarm(list[0])
+
+        }
 
         resultIntent.data = Uri.parse(
             "content://"
