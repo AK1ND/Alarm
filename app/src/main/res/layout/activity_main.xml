@@ -6,15 +6,20 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/selectedTime"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAlarms"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:text="@string/no_alarm"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="46sp" />
+        android:layout_height="wrap_content" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/selectedTime"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="200dp"-->
+<!--        android:text="@string/no_alarm"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="46sp" />-->
 
     <Button
         android:id="@+id/selectTimeBtn"
@@ -23,15 +28,5 @@
         android:layout_marginTop="36dp"
         android:text="Select Time"
         android:textSize="26sp" />
-
-
-    <Button
-        android:id="@+id/cancelAlarmBtn"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginTop="8dp"
-        android:text="Cancel Alarm"
-        android:textSize="26sp" />
-
 
 </androidx.appcompat.widget.LinearLayoutCompat>

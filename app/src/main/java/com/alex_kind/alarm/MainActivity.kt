@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.alex_kind.alarm.databinding.ActivityMainBinding
 import com.alex_kind.alarm.db.Alarms
@@ -33,6 +34,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        CoroutineScope(Dispatchers.Main).launch {
+
+            val db =
+                Room.databaseBuilder(applicationContext, DatabaseAlarms::class.java, "myalarms")
+                    .createFromAsset("myalarms")
+                    .build()
+            val alarms = db.alarmsDao().getAlarms()
+
+            Log.d("!!!alarmsAdapt", alarms.toString())
+
+            binding.rvAlarms.adapter = AlarmAdapter(alarms, this)
+            binding.rvAlarms.layoutManager = LinearLayoutManager(applicationContext)
+
+        }
+
         createNotificationChannel()
 
         binding.selectTimeBtn.setOnClickListener {
@@ -54,18 +70,15 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Alarm Cancelled", Toast.LENGTH_SHORT)
             .show()
 
-        binding.selectedTime.text = getString(R.string.no_alarm)
+//        binding.selectedTime.text = getString(R.string.no_alarm)
 
     }
 
-    private fun setAlarm() {
+    private fun setAlarm(req: Int) {
 
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(this, AlarmReceiver::class.java)
-
-        val req = (Math.random() * 100).toInt()
-        Log.d("!!!", req.toString())
 
         pendingIntent = PendingIntent.getBroadcast(this, req, intent, 0)
 
@@ -73,6 +86,10 @@ class MainActivity : AppCompatActivity() {
 
         Toast.makeText(this, "Alarm set Successfully", Toast.LENGTH_SHORT)
             .show()
+
+        recreate()
+
+
 
     }
 
@@ -86,11 +103,11 @@ class MainActivity : AppCompatActivity() {
         picker.show(supportFragmentManager, "alarm id")
 
         picker.addOnPositiveButtonClickListener {
-            binding.selectedTime.text =
-                String.format("%02d", picker.hour) + ":" + String.format(
-                    "%02d",
-                    picker.minute
-                )
+//            binding.selectedTime.text =
+//                String.format("%02d", picker.hour) + ":" + String.format(
+//                    "%02d",
+//                    picker.minute
+//                )
 
             CoroutineScope(Dispatchers.Main).launch {
 
@@ -98,6 +115,18 @@ class MainActivity : AppCompatActivity() {
                     Room.databaseBuilder(applicationContext, DatabaseAlarms::class.java, "myalarms")
                         .createFromAsset("myalarms")
                         .build()
+
+                calendar = Calendar.getInstance()
+
+                val list = db.alarmsDao().getAlarms()
+                var isDbConsistAlarm = false
+
+                for (i in list.indices) {
+                    if (list[i].hour == picker.hour && list[i].minute == picker.minute) {
+                        db.alarmsDao().delAlarm(list[i])
+                        isDbConsistAlarm = true
+                    }
+                }
 
                 val reqList = db.alarmsDao().getReqCodes()
                 Log.d("!!!reqL", reqList.toString())
@@ -109,36 +138,25 @@ class MainActivity : AppCompatActivity() {
 
                 val newAlarm = Alarms(req, picker.hour, picker.minute)
 
-
                 db.alarmsDao().addAlarm(newAlarm)
 
                 Log.d("!!!newal", db.alarmsDao().getAlarms().toString())
 
-                val alarmList = db.alarmsDao().getAlarms()
+                if (!isDbConsistAlarm){
+                    if (calendar[Calendar.HOUR_OF_DAY] > picker.hour) {
+                        if (calendar[Calendar.MINUTE] > picker.minute) {
+                            calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH + 1]
+                        }
+                    }
+                    calendar[Calendar.HOUR_OF_DAY] = picker.hour
+                    calendar[Calendar.MINUTE] = picker.minute
+                    calendar[Calendar.SECOND] = 0
+                    calendar[Calendar.MILLISECOND] = 0
 
-                val list = alarmList.sortedWith(compareBy { it.hour * 60 + it.minute })
-
-                Log.d("!!!sorted", list.toString())
-
-                db.alarmsDao().deleteAll()
-                db.alarmsDao().insertAll(list)
-
-
-            }
-
-            calendar = Calendar.getInstance()
-
-            if (calendar[Calendar.HOUR_OF_DAY] > picker.hour) {
-                if (calendar[Calendar.MINUTE] > picker.minute) {
-                    calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH + 1]
+                    setAlarm(newAlarm.requestCode)
                 }
-            }
-            calendar[Calendar.HOUR_OF_DAY] = picker.hour
-            calendar[Calendar.MINUTE] = picker.minute
-            calendar[Calendar.SECOND] = 0
-            calendar[Calendar.MILLISECOND] = 0
 
-            setAlarm()
+            }
 
         }
 
