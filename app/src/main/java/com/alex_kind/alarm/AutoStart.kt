@@ -17,10 +17,10 @@ class AutoStart : BroadcastReceiver() {
             context?.startActivity(intent)
 
             //roll up app when device was rebooted
-            delay(50)
-            intent = Intent(Intent.ACTION_MAIN)
-            intent.addCategory(Intent.CATEGORY_HOME)
-            context?.startActivity(intent)
+//            delay(50)
+//            intent = Intent(Intent.ACTION_MAIN)
+//            intent.addCategory(Intent.CATEGORY_HOME)
+//            context?.startActivity(intent)
         }
     }
 }

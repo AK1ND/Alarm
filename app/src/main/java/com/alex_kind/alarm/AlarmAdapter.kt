@@ -44,8 +44,8 @@ class AlarmAdapter(var alarms: List<Alarms>, mainActivity: CoroutineScope) :
         val alarm = alarms[position]
 
         var minute = alarm.minute.toString()
-        if(alarm.minute == 0){
-            minute = "00"
+        if(alarm.minute < 10){
+            minute = "0"+alarm.minute.toString()
         }
 
         holder.tvAlarm?.text = alarm.hour.toString()+":"+minute
