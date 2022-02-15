@@ -37,7 +37,7 @@ class SoundActivity : AppCompatActivity() {
 
         try {
             ringtone.play()
-        }catch (e:Exception){
+        } catch (e: Exception) {
             player.start()
         }
 
@@ -80,8 +80,9 @@ class SoundActivity : AppCompatActivity() {
         } else {
             this.window.addFlags(
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
-                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
-                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            )
         }
     }
 

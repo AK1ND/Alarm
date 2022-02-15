@@ -17,7 +17,7 @@ interface DaoAlarms {
     suspend fun addAlarm(newAlarms: Alarms)
 
     @Delete
-    suspend fun delAlarm(alarm:Alarms)
+    suspend fun delAlarm(alarm: Alarms)
 
     @Query("DELETE FROM alarms")
     suspend fun deleteAll()

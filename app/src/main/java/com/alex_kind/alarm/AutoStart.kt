@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class AutoStart: BroadcastReceiver() {
+class AutoStart : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
 
         CoroutineScope(Dispatchers.Main).launch {

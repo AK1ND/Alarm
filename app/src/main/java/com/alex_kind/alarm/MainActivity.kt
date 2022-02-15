@@ -5,13 +5,11 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.alex_kind.alarm.databinding.ActivityMainBinding
 import com.alex_kind.alarm.db.Alarms
@@ -41,17 +39,7 @@ class MainActivity : AppCompatActivity() {
             showTimePicker()
         }
 
-        binding.cancelAlarmBtn.setOnClickListener {
-            cancel()
-        }
 
-
-    }
-
-    private fun cancel() {
-        val startMain = Intent(Intent.ACTION_MAIN)
-        startMain.addCategory(Intent.CATEGORY_HOME)
-        startActivity(startMain)
     }
 
 
@@ -112,29 +100,28 @@ class MainActivity : AppCompatActivity() {
                         .build()
 
                 val reqList = db.alarmsDao().getReqCodes()
-                Log.d("!!!reqL",reqList.toString())
+                Log.d("!!!reqL", reqList.toString())
 
                 var req = 1
                 for (i in reqList.indices) {
-                 req+=reqList[i]
+                    req += reqList[i]
                 }
 
-                val newAlarm = Alarms(req,picker.hour,picker.minute)
+                val newAlarm = Alarms(req, picker.hour, picker.minute)
 
 
                 db.alarmsDao().addAlarm(newAlarm)
 
-                Log.d("!!!newal",db.alarmsDao().getAlarms().toString())
+                Log.d("!!!newal", db.alarmsDao().getAlarms().toString())
 
                 val alarmList = db.alarmsDao().getAlarms()
 
-                val list = alarmList.sortedWith(compareBy { it.hour*60+it.minute })
+                val list = alarmList.sortedWith(compareBy { it.hour * 60 + it.minute })
 
-                Log.d("!!!sorted",list.toString())
+                Log.d("!!!sorted", list.toString())
 
                 db.alarmsDao().deleteAll()
                 db.alarmsDao().insertAll(list)
-
 
 
             }
@@ -143,7 +130,7 @@ class MainActivity : AppCompatActivity() {
 
             if (calendar[Calendar.HOUR_OF_DAY] > picker.hour) {
                 if (calendar[Calendar.MINUTE] > picker.minute) {
-                    calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH+1]
+                    calendar[Calendar.DAY_OF_MONTH] = calendar[Calendar.DAY_OF_MONTH + 1]
                 }
             }
             calendar[Calendar.HOUR_OF_DAY] = picker.hour
