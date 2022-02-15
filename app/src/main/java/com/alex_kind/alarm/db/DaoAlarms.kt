@@ -1,6 +1,7 @@
 package com.alex_kind.alarm.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -14,4 +15,14 @@ interface DaoAlarms {
 
     @Insert
     suspend fun addAlarm(newAlarms: Alarms)
+
+    @Delete
+    suspend fun delAlarm(alarm:Alarms)
+
+    @Query("DELETE FROM alarms")
+    suspend fun deleteAll()
+
+    @Insert
+    suspend fun insertAll(alarms: List<Alarms?>?)
+
 }
