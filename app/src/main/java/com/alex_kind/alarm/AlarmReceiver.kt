@@ -23,11 +23,6 @@ class AlarmReceiver : BroadcastReceiver() {
         val intent = Intent(context, SoundActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-        if (intent.action.equals(Intent.ACTION_BOOT_COMPLETED)) {
-
-        }
-
-
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
 
         val builder = NotificationCompat.Builder(context!!, "alarm id")
