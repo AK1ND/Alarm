@@ -41,7 +41,17 @@ class MainActivity : AppCompatActivity() {
             showTimePicker()
         }
 
+        binding.cancelAlarmBtn.setOnClickListener {
+            cancel()
+        }
 
+
+    }
+
+    private fun cancel() {
+        val startMain = Intent(Intent.ACTION_MAIN)
+        startMain.addCategory(Intent.CATEGORY_HOME)
+        startActivity(startMain)
     }
 
 

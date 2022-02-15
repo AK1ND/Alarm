@@ -1,5 +1,6 @@
 package com.alex_kind.alarm
 
+import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
@@ -8,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.alex_kind.alarm.databinding.ActivitySoundBinding
 
@@ -21,6 +23,9 @@ class SoundActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySoundBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        screenUnlock()
+
 
         ringtoneManager = RingtoneManager(this)
 
@@ -63,6 +68,21 @@ class SoundActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+    }
+
+
+    private fun screenUnlock() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+            val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            keyguardManager.requestDismissKeyguard(this, null)
+        } else {
+            this.window.addFlags(
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD or
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+        }
     }
 
 

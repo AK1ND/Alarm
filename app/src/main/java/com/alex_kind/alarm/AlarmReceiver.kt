@@ -14,8 +14,14 @@ import java.util.*
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, p1: Intent?) {
 
+
         val intent = Intent(context, SoundActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        if (intent.action.equals(Intent.ACTION_BOOT_COMPLETED)){
+
+        }
+
 
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
 
